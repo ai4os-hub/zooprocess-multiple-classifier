@@ -7,7 +7,7 @@ name = "ai4os-zooprocess_multiple_classifier"
 authors = [
     { name = "Jean-Olivier Irisson", email = "irisson@normalesup.org" },
 ]
-description = "A module to differenciate images containing multiple zooplankton objects from those containing only only one object"
+description = "A module to differentiate images containing multiple zooplankton objects from those containing only only one object"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "AGPL-3.0-only" }

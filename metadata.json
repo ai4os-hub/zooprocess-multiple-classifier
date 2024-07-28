@@ -1,9 +1,9 @@
 {
     "title": "ai4os-zooprocess_multiple_classifier",
-    "summary": "A module to differenciate images containing multiple zooplankton objects from those containing only only one object",
+    "summary": "A module to differentiate images containing multiple zooplankton objects from those containing only only one object",
     "description": [
         "ai4os_zooprocess_multiple_classifier is an application using the DEEPaaS API.\n",
-        "A module to differenciate images containing multiple zooplankton objects from those containing only only one object"
+        "A module to differentiate images containing multiple zooplankton objects from those containing only only one object"
     ],
     "keywords": [
         "docker",

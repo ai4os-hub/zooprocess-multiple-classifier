@@ -1,7 +1,7 @@
 # ai4os-zooprocess_multiple_classifier
 [![Build Status](https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/ai4os-zooprocess_multiple_classifier/main)](https://jenkins.services.ai4os.eu/job/AI4OS-hub/job/ai4os-zooprocess_multiple_classifier/job/main/)
 
-A module to differenciate images containing multiple zooplankton objects from those containing only only one object
+A module to differentiate images containing multiple zooplankton objects from those containing only only one object
 
 To launch it, first install the package then run [deepaas](https://github.com/ai4os/DEEPaaS):
 ```bash
