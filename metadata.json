@@ -1,0 +1,37 @@
+{
+    "title": "ai4os-zooprocess_multiple_classifier",
+    "summary": "A module to differenciate images containing multiple zooplankton objects from those containing only only one object",
+    "description": [
+        "ai4os_zooprocess_multiple_classifier is an application using the DEEPaaS API.\n",
+        "A module to differenciate images containing multiple zooplankton objects from those containing only only one object"
+    ],
+    "keywords": [
+        "docker",
+        "api-v2"
+    ],
+    "license": "AGPL-3.0-only",
+    "date_creation": "2024-07-28",
+    "sources": {
+		"dockerfile_repo": "https://github.com/ecotaxa/ai4os-zooprocess_multiple_classifier",
+		"docker_registry_repo": "ai4oshub/ai4os-zooprocess_multiple_classifier",
+		"code": "https://github.com/ecotaxa/ai4os-zooprocess_multiple_classifier",
+		"ai4_template": "ai4-template/2.1.1"
+    },
+    "continuous_integration": {
+        "build_status_badge": "https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/ai4os-zooprocess_multiple_classifier/main",
+        "build_status_url": "https://jenkins.services.ai4os.eu/job/AI4OS-hub/job/ai4os-zooprocess_multiple_classifier/job/main/"
+    },
+    "tosca": [
+        {
+            "title": "Mesos (CPU)",
+            "url": "https://raw.githubusercontent.com/indigo-dc/tosca-templates/master/deep-oc/deep-oc-marathon-webdav.yml",
+            "inputs": [
+                "rclone_conf",
+                "rclone_url",
+                "rclone_vendor",
+                "rclone_user",
+                "rclone_pass"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai4os-zooprocess_multiple_classifier"
+authors = [
+    { name = "Jean-Olivier Irisson", email = "irisson@normalesup.org" },
+]
+description = "A module to differenciate images containing multiple zooplankton objects from those containing only only one object"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "AGPL-3.0-only" }
+classifiers = [
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: AI/ML/DL Researchers",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+]
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+"Homepage" = "https://github.com/ecotaxa/ai4os-zooprocess_multiple_classifier"
+"Bug Tracker" = "https://github.com/ecotaxa/ai4os-zooprocess_multiple_classifier/issues"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+env = [
+    "AI4OS_ZOOPROCESS_MULTIPLE_CLASSIFIER_DATA_PATH=tests/data",
+    "AI4OS_ZOOPROCESS_MULTIPLE_CLASSIFIER_MODELS_PATH=tests/models",
+]
+# Allow test files to share names
+# https://docs.pytest.org/en/7.1.x/explanation/goodpractices.html
+addopts = "--import-mode=importlib"
+
+[tool.setuptools]
+packages = [ "ai4os_zooprocess_multiple_classifier" ]
+
+[tool.setuptools.package-dir]
+"ai4os_zooprocess_multiple_classifier" = "ai4os_zooprocess_multiple_classifier"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+version = { file = "VERSION" }
+
+[project.entry-points."deepaas.v2.model"]
+ai4os_zooprocess_multiple_classifier = "ai4os_zooprocess_multiple_classifier.api"
