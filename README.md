@@ -1,9 +1,16 @@
 # ai4os-zooprocess_multiple_classifier
 [![Build Status](https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/ai4os-zooprocess_multiple_classifier/main)](https://jenkins.services.ai4os.eu/job/AI4OS-hub/job/ai4os-zooprocess_multiple_classifier/job/main/)
 
-A module to differentiate images containing multiple zooplankton objects from those containing only only one object
+A module to differentiate images containing multiple zooplankton objects from those containing only only one object.
+
+It processes regions of interest (ROIs or 'vignettes') extracted by ZooProcess from an original image taken by the ZooScan instrument.
+
+These ROIs should contains only one object for later classification. This module tries to predict which image contain multiple objects so that they can then be separated before their classification. The separation is done by another module called ai4os-zooprocess_multiple_separator.
+
+This application uses a MobileNet v3 classifier trained towards maximizing the recall of the 'multiple' class. It returns the predicted class and associated probability.
 
 To launch it, first install the package then run [deepaas](https://github.com/ai4os/DEEPaaS):
+
 ```bash
 git clone https://github.com/ecotaxa/ai4os-zooprocess_multiple_classifier
 cd ai4os-zooprocess_multiple_classifier
@@ -12,6 +19,7 @@ deepaas-run --listen-ip 0.0.0.0
 ```
 
 ## Project structure
+
 ```
 │
 ├── Dockerfile             <- Describes main steps on integration of DEEPaaS API and
@@ -36,6 +44,8 @@ deepaas-run --listen-ip 0.0.0.0
 │   ├── config.py          <- Configuration file to define Constants used across ai4os_zooprocess_multiple_classifier
 │   │
 │   └── misc.py            <- Misc functions that were helpful accross projects
+│   │
+│   └── utils.py           <- Contains the actual code to perform inference
 │
 ├── data/                  <- Folder to store the data
 │
