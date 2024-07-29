@@ -26,16 +26,23 @@ an exemplar module [2].
 
 from pathlib import Path
 import logging
+import os
 
 from ai4os_zooprocess_multiple_classifier import config
+from ai4os_zooprocess_multiple_classifier.utils import transform_valid
 from ai4os_zooprocess_multiple_classifier.misc import _catch_error
+
+from webargs import fields
+
+from PIL import Image
+import torch
+
 
 # set up logging
 logger = logging.getLogger(__name__)
 logger.setLevel(config.LOG_LEVEL)
 
 BASE_DIR = Path(__file__).resolve().parents[1]
-
 
 @_catch_error
 def get_metadata():
@@ -64,20 +71,76 @@ def get_metadata():
         logger.error("Error collecting metadata: %s", err, exc_info=True)
         raise  # Reraise the exception after log
 
+# initialise model (which is a global variable)
+model = None
+# define device  = cuda when available
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-# def warm():
-#     pass
-#
-#
-# def get_predict_args():
-#     return {}
-#
-#
-# @_catch_error
-# def predict(**kwargs):
-#     return None
-#
-#
+
+def warm():
+    """
+    Load model upon application startup
+    """
+    global model, device
+
+    model_path = os.path.join(BASE_DIR, 'models', 'best_model.pt')
+    # model_path = 'models/best_model.pt'
+    if not os.path.exists(model_path):
+        print("Model not found.")
+    model = torch.load(model_path, weights_only=False)
+    model = model.to(device)
+
+
+def get_predict_args():
+    """
+    Get the list of arguments for the predict function
+    """
+    arg_dict = {
+        "image": fields.Field(
+            metadata={
+                'required':True,
+                'type':"file",
+                'location':"form",
+                'description':"An image containing object(s) to classify"
+            }
+        ),
+    }
+
+    return arg_dict
+
+
+@_catch_error
+def predict(**kwargs):
+    """
+    Predict the classification of an object
+    """
+
+    # read image
+    filename = kwargs['image'].filename
+    img = Image.open(filename)
+
+    # prepare it for the network
+    img = img.convert('RGB')
+    img = transform_valid(img)
+    img = img.to(device)
+    img = img[None, :,:,:] # add empty dimension as for a batch
+
+    # get predicted classification
+    model.eval()
+    with torch.no_grad():
+        score = model(img)
+    # NB: at this point, the softmax as not been applied yet
+    score = torch.nn.functional.softmax(score, dim=1)
+    # print('score =', score)
+
+    # NB: extract the float value from the tensor, otherwise validation fails
+    return {"score": score[0][0].item()}
+
+# Schema to validate the `predict()` output
+schema = {
+    "score": fields.Float()
+}
+
 # def get_train_args():
 #     return {}
 #
