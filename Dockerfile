@@ -69,8 +69,8 @@ RUN git clone https://github.com/ai4os/deep-start /srv/.deep-start && \
 ENV SHELL /bin/bash
 
 # Install user app
-RUN git clone -b $branch https://github.com/ecotaxa/ai4os-zooprocess_multiple_classifier && \
-    cd  ai4os-zooprocess_multiple_classifier && \
+RUN git clone -b $branch https://github.com/ai4os-hub/zooprocess-multiple-classifier && \
+    cd  zooprocess-multiple-classifier && \
     pip3 install --no-cache-dir -e . && \
     cd ..
 

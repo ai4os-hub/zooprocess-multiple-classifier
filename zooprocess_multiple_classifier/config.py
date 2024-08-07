@@ -11,7 +11,7 @@ import os
 from importlib import metadata
 
 # Get AI model metadata
-API_NAME = "ai4os_zooprocess_multiple_classifier"
+API_NAME = "zooprocess_multiple_classifier"
 API_METADATA = metadata.metadata(API_NAME)  # .json
 
 # Fix metadata for emails from pyproject parsing

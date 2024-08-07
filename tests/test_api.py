@@ -12,7 +12,7 @@ you make to the code.
 
 import unittest
 
-import ai4os_zooprocess_multiple_classifier.api as api
+import zooprocess_multiple_classifier.api as api
 
 
 class TestModelMethods(unittest.TestCase):
@@ -31,7 +31,7 @@ class TestModelMethods(unittest.TestCase):
         """
         self.assertEqual(
             self.meta["name"].lower().replace("-", "_"),
-            "ai4os_zooprocess_multiple_classifier".lower().replace("-", "_"),
+            "zooprocess_multiple_classifier".lower().replace("-", "_"),
         )
         self.assertEqual(
             self.meta["author"], "Jean-Olivier Irisson".replace(", ", ",").split(",")

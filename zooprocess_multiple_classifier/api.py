@@ -28,9 +28,9 @@ from pathlib import Path
 import logging
 import os
 
-from ai4os_zooprocess_multiple_classifier import config
-from ai4os_zooprocess_multiple_classifier.utils import transform_valid
-from ai4os_zooprocess_multiple_classifier.misc import _catch_error
+from zooprocess_multiple_classifier import config
+from zooprocess_multiple_classifier.utils import transform_valid
+from zooprocess_multiple_classifier.misc import _catch_error
 
 from webargs import fields
 

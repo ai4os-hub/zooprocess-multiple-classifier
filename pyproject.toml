@@ -3,7 +3,7 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ai4os-zooprocess_multiple_classifier"
+name = "zooprocess_multiple_classifier"
 authors = [
     { name = "Jean-Olivier Irisson", email = "irisson@normalesup.org" },
 ]
@@ -20,8 +20,8 @@ classifiers = [
 dynamic = ["version", "dependencies"]
 
 [project.urls]
-"Homepage" = "https://github.com/ecotaxa/ai4os-zooprocess_multiple_classifier"
-"Bug Tracker" = "https://github.com/ecotaxa/ai4os-zooprocess_multiple_classifier/issues"
+"Homepage" = "https://github.com/ai4os-hub/zooprocess-multiple-classifier"
+"Bug Tracker" = "https://github.com/ai4os-hub/zooprocess-multiple-classifier/issues"
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
@@ -34,14 +34,14 @@ env = [
 addopts = "--import-mode=importlib"
 
 [tool.setuptools]
-packages = [ "ai4os_zooprocess_multiple_classifier" ]
+packages = [ "zooprocess_multiple_classifier" ]
 
 [tool.setuptools.package-dir]
-"ai4os_zooprocess_multiple_classifier" = "ai4os_zooprocess_multiple_classifier"
+"zooprocess_multiple_classifier" = "zooprocess_multiple_classifier"
 
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
 version = { file = "VERSION" }
 
 [project.entry-points."deepaas.v2.model"]
-ai4os_zooprocess_multiple_classifier = "ai4os_zooprocess_multiple_classifier.api"
+zooprocess_multiple_classifier = "zooprocess_multiple_classifier.api"
