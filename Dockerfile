@@ -16,7 +16,7 @@ ARG tag=2.4.0-cuda12.1-cudnn9-runtime
 FROM pytorch/pytorch:${tag}
 
 LABEL maintainer='Jean-Olivier Irisson'
-LABEL version='0.0.1'
+LABEL version='1.0.0'
 # A module to differentiate images containing multiple zooplankton objects from those containing only only one object
 
 # What user branch to clone [!]
@@ -73,6 +73,8 @@ RUN git clone -b $branch https://github.com/ai4os-hub/zooprocess-multiple-classi
     cd  zooprocess-multiple-classifier && \
     pip3 install --no-cache-dir -e . && \
     cd ..
+
+ADD https://github.com/ai4os-hub/zooprocess-multiple-classifier/releases/download/v1.0.0/best_model-2024-07-29_21-23-29.pt zooprocess-multiple-classifier/models/best_model-2024-07-29_21-23-29.pt
 
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888
