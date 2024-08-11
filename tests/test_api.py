@@ -35,7 +35,7 @@ class TestModelMethods(unittest.TestCase):
         )
         self.assertEqual(
             self.meta["author"], "Jean-Olivier Irisson".
-              replace(", ", ",").split(",")
+            replace(", ", ",").split(",")
         )
         self.assertEqual(
             self.meta["license"].lower(),

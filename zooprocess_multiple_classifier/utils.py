@@ -1,11 +1,14 @@
-#
-# Functions used in api.py
-#
+# -*- coding: utf-8 -*-
+"""
+Utility functions, used in api.py
+(which allow to keep api.py simple)
+"""
 
 import torch
 import torchvision.transforms.v2 as tr
 import torchvision.transforms.v2.functional as trf
 import numpy as np
+
 
 # Prepare a zooscan image by removing the scale bar and centering on the object
 def prepare_zooscan_img(img):
@@ -40,7 +43,7 @@ def prepare_zooscan_img(img):
     else:
         img = trf.pad(img, padding=(0, pad_1, 0, pad_2), fill=0)
 
-    return(img)
+    return img
 
 
 # Prepare the image and augment it
@@ -56,7 +59,7 @@ def transform_train(img):
     ])
     img = augment(img)
 
-    return(img)
+    return img
 
 
 # Prepare the image and only resize it
@@ -69,5 +72,4 @@ def transform_valid(img):
     ])
     img = convert(img)
 
-    return(img)
-
+    return img
