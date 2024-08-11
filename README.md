@@ -1,7 +1,7 @@
 # zooprocess-multiple-classifier
 [![Build Status](https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/zooprocess-multiple-classifier/main)](https://jenkins.services.ai4os.eu/job/AI4OS-hub/job/zooprocess-multiple-classifier/job/main/)
 
-A module to differentiate images containing multiple zooplankton objects from those containing only only one object.
+A module to differentiate images containing multiple zooplankton objects from those containing only one object.
 
 It processes regions of interest (ROIs or 'vignettes') extracted by ZooProcess from an original image taken by the ZooScan instrument.
 
