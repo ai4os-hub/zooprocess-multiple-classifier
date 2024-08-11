@@ -74,6 +74,8 @@ RUN git clone -b $branch https://github.com/ai4os-hub/zooprocess-multiple-classi
     pip3 install --no-cache-dir -e . && \
     cd ..
 
+ADD https://github.com/ai4os-hub/zooprocess-multiple-classifier/releases/download/v1.0.0/best_model-2024-07-29_21-23-29.pt zooprocess-multiple-classifier/models/best_model-2024-07-29_21-23-29.pt
+
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888
 
