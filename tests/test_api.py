@@ -34,7 +34,8 @@ class TestModelMethods(unittest.TestCase):
             "zooprocess_multiple_classifier".lower().replace("-", "_"),
         )
         self.assertEqual(
-            self.meta["author"], "Jean-Olivier Irisson".replace(", ", ",").split(",")
+            self.meta["author"], "Jean-Olivier Irisson".\
+            replace(", ", ",").split(",")
         )
         self.assertEqual(
             self.meta["license"].lower(),

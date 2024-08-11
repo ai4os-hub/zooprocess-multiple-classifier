@@ -30,6 +30,7 @@ logger.setLevel(config.LOG_LEVEL)
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
+
 @_catch_error
 def get_metadata():
     """Returns a dictionary containing metadata information about the module.
@@ -56,6 +57,7 @@ def get_metadata():
     except Exception as err:
         logger.error("Error collecting metadata: %s", err, exc_info=True)
         raise  # Reraise the exception after log
+
 
 # initialise model (which is a global variable)
 model = None
@@ -84,10 +86,10 @@ def get_predict_args():
     arg_dict = {
         "image": fields.Field(
             metadata={
-                'required':True,
-                'type':"file",
-                'location':"form",
-                'description':"An image containing object(s) to classify"
+                'required': True,
+                'type': "file",
+                'location': "form",
+                'description': "An image containing object(s) to classify"
             }
         ),
     }
@@ -109,7 +111,7 @@ def predict(**kwargs):
     img = img.convert('RGB')
     img = transform_valid(img)
     img = img.to(device)
-    img = img[None, :,:,:] # add empty dimension as for a batch
+    img = img[None, :, :, :]  # add empty dimension as for a batch
 
     # get predicted classification
     model.eval()
@@ -121,6 +123,7 @@ def predict(**kwargs):
 
     # NB: extract the float value from the tensor, otherwise validation fails
     return {"score": score[0][0].item()}
+
 
 # Schema to validate the `predict()` output
 schema = {
