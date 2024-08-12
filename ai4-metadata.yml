@@ -1,0 +1,17 @@
+metadata_version: 2.0.0
+title: zooprocess_multiple_classifier
+summary: A module to differentiate images containing multiple zooplankton objects from those containing only only one object
+description: '"zooprocess_multiple_classifier is an application using the DEEPaaS API.\n" "This module processes regions of interest (ROIs or ''vignettes'') extracted by ZooProcess from an original image taken by the ZooScan instrument.\n" "These ROIs should contains only one object for later classification. This module tries to predict which image contain multiple objects so that they can then be separated before their classification. The separation is done by another module called ai4os-zooprocess_multiple_separator.\n" "This application uses a MobileNet v3 classifier trained towards maximizing the recall of the ''multiple'' class. It returns the predicted class and associated probability.\n"'
+dates:
+  created: '2024-07-28'
+  updated: '2024-08-12'
+links:
+  source_code: https://github.com/ai4os-hub/zooprocess-multiple-classifier
+  docker_image: ai4oshub/zooprocess-multiple-classifier
+  ai4_template: ai4-template/2.1.1
+tags:
+- docker
+- api-v2
+tasks: []
+categories: []
+libraries: []
