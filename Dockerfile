@@ -41,7 +41,7 @@ RUN python3 --version && \
 # [1]: https://github.com/pypa/setuptools/issues/3301
 
 # Set LANG environment
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 # Set the working directory
 WORKDIR /srv
@@ -58,7 +58,7 @@ WORKDIR /srv
 # ENV RCLONE_CONFIG=/srv/.rclone/rclone.conf
 
 # Disable FLAAT authentication by default
-ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER yes
+ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER=yes
 
 # Initialization scripts
 # deep-start can install JupyterLab or VSCode if requested
@@ -66,7 +66,7 @@ RUN git clone https://github.com/ai4os/deep-start /srv/.deep-start && \
     ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start
 
 # Necessary for the Jupyter Lab terminal
-ENV SHELL /bin/bash
+ENV SHELL=/bin/bash
 
 # Install user app
 RUN git clone -b $branch https://github.com/ai4os-hub/zooprocess-multiple-classifier && \
@@ -74,7 +74,11 @@ RUN git clone -b $branch https://github.com/ai4os-hub/zooprocess-multiple-classi
     pip3 install --no-cache-dir -e . && \
     cd ..
 
-ADD https://github.com/ai4os-hub/zooprocess-multiple-classifier/releases/download/v1.0.0/best_model-2024-07-29_21-23-29.pt zooprocess-multiple-classifier/models/best_model-2024-07-29_21-23-29.pt
+# Download from Google Drive
+ADD https://drive.usercontent.google.com/u/0/uc?id=1uruFEibh2WC5_HWl8av-Ajg-zbsf_fKE&export=download zooprocess-multiple-classifier/models/best_model-2024-07-29_21-23-29.pt
+
+# Download from github release
+#ADD https://github.com/ai4os-hub/zooprocess-multiple-classifier/releases/download/v1.0.0/best_model-2024-07-29_21-23-29.pt zooprocess-multiple-classifier/models/best_model-2024-07-29_21-23-29.pt
 
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888
