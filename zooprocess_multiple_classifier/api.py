@@ -75,7 +75,9 @@ def warm():
     model_path = os.path.join(BASE_DIR, 'models', 'best_model-2024-07-29_21-23-29.pt')
     if not os.path.exists(model_path):
         print("Model not found.")
-    model = torch.load(model_path, weights_only=False)
+    model = torch.load(model_path, 
+                       weights_only=False,
+                       map_location=torch.device(device))
     model = model.to(device)
 
 
