@@ -6,11 +6,12 @@
         "This module processes regions of interest (ROIs or 'vignettes') extracted by ZooProcess from an original image taken by the ZooScan instrument.\n",
 
         "These ROIs should contains only one object for later classification. This module tries to predict which image contain multiple objects so that they can then be separated before their classification. The separation is done by another module called ai4os-zooprocess_multiple_separator.\n",
-        "This application uses a MobileNet v3 classifier trained towards maximizing the recall of the 'multiple' class. It returns the predicted class and associated probability.\n",
+        "This application uses a MobileNet v3 classifier trained towards maximizing the recall of the 'multiple' class. It returns the predicted class and associated probability.\n"
     ],
     "keywords": [
         "docker",
-        "api-v2"
+        "api-v2",
+        "vo.imagine-ai.eu"
     ],
     "license": "AGPL-3.0-only",
     "date_creation": "2024-07-28",

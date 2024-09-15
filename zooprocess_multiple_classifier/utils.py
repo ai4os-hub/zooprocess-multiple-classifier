@@ -51,7 +51,7 @@ def transform_train(img):
     img = prepare_zooscan_img(img)
     # augment
     augment = tr.Compose([
-        tr.RandomResizedCrop(224, scale=(1,1.4), ratio=(1,1)),
+        tr.RandomResizedCrop(224, scale=(1, 1.4), ratio=(1, 1)),
         tr.RandomRotation(90, fill=0),
         tr.RandomVerticalFlip(),
         tr.ColorJitter(brightness=0, contrast=0.2, saturation=0, hue=0),
