@@ -5,7 +5,7 @@ A module to differentiate images containing multiple zooplankton objects from th
 
 It processes regions of interest (ROIs or 'vignettes') extracted by ZooProcess from an original image taken by the ZooScan instrument.
 
-These ROIs should contains only one object for later classification. This module tries to predict which image contain multiple objects so that they can then be separated before their classification. The separation is done by another module called ai4os-zooprocess_multiple_separator.
+These ROIs should contains only one object for later classification. This module tries to predict which image contain multiple objects so that they can then be separated before their classification. The separation is done by another module called `ai4os-zooprocess_multiple_separator`.
 
 This application uses a MobileNet v3 classifier trained towards maximizing the recall of the 'multiple' class. It returns the predicted class and associated probability.
 
