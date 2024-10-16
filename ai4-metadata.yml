@@ -11,7 +11,7 @@ description: |-
   It returns the predicted class and associated probability.
 dates:
   created: '2024-07-28'
-  updated: '2024-08-12'
+  updated: '2024-10-16'
 links:
   source_code: https://github.com/ai4os-hub/zooprocess-multiple-classifier
   docker_image: ai4oshub/zooprocess-multiple-classifier
