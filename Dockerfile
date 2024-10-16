@@ -7,7 +7,7 @@
 # or using default args:
 # $ docker build -t <dockerhub_user>/<dockerhub_repo> .
 #
-# Be Aware! For the Jenkins CI/CD pipeline, 
+# Be Aware! For the Jenkins CI/CD pipeline,
 # input args are defined inside the JenkinsConstants.groovy, not here!
 
 ARG tag=2.4.0-cuda12.1-cudnn9-runtime
