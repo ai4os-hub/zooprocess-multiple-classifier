@@ -90,11 +90,11 @@ def get_predict_args():
     arg_dict = {
         "image": fields.Field(
             metadata={
-                'required': True,
                 'type': "file",
                 'location': "form",
-                'description': "An image containing object(s) to classify"
-            }
+                'description': "An image containing object(s) to classify (the bottom 31px will be cropped before classification)"
+            },
+            required = True
         ),
     }
 
