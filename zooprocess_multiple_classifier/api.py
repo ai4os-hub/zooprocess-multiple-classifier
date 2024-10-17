@@ -105,6 +105,14 @@ def get_predict_args():
 def predict(**kwargs):
     """
     Predict the classification of an object
+    
+    Args:
+        See get_predict_args() above.
+    
+    Returns:
+        A float, in [0,1]: the probability for the image to be a multiple. A natural
+        threshold to classify it as multiple is 0.5 but lowering this threshold can
+        increase the recall of multiples, at the expense of precision.
     """
 
     # read image
