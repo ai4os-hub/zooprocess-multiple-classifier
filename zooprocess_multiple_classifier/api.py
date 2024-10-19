@@ -101,6 +101,17 @@ def get_predict_args():
     return arg_dict
 
 
+# Returned data schema
+schema = {
+    "score": fields.Float(
+        required=True,
+        metadata={
+            'description': "in [0,1]: the probability for the image to be a multiple. A natural threshold to classify it as multiple is 0.5 but lowering this threshold can increase the recall of multiples, at the expense of precision."
+        }
+    )
+}
+
+
 @_catch_error
 def predict(**kwargs):
     """
@@ -110,7 +121,7 @@ def predict(**kwargs):
         See get_predict_args() above.
     
     Returns:
-        See api/__init__.py.
+        See schema, above.
     """
 
     # read image
