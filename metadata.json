@@ -12,10 +12,10 @@
     "license": "AGPL-3.0-only",
     "date_creation": "2024-07-28",
     "sources": {
-		"dockerfile_repo": "https://github.com/ai4os-hub/zooprocess-multiple-classifier",
-		"docker_registry_repo": "ai4oshub/zooprocess-multiple-classifier",
-		"code": "https://github.com/ai4os-hub/zooprocess-multiple-classifier",
-		"ai4_template": "ai4-template/2.1.1"
+        "dockerfile_repo": "https://github.com/ai4os-hub/zooprocess-multiple-classifier",
+        "docker_registry_repo": "ai4oshub/zooprocess-multiple-classifier",
+        "code": "https://github.com/ai4os-hub/zooprocess-multiple-classifier",
+        "ai4_template": "ai4-template/2.1.1"
     },
     "continuous_integration": {
         "build_status_badge": "https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/zooprocess-multiple-classifier/main",
