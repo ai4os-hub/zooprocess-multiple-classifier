@@ -27,6 +27,7 @@ Getting the image works through
 docker pull ai4oshub/zooprocess-multiple-classifier:latest
 ```
 
+<img src="illustration_classifier.png" style="width: 100%;" alt="illustration" />
 
 ## Project structure
 
