@@ -17,7 +17,6 @@ FROM pytorch/pytorch:${tag}
 
 LABEL maintainer='Jean-Olivier Irisson'
 LABEL version='1.1.0'
-# A module to differentiate images containing multiple zooplankton objects from those containing only only one object
 
 # What user branch to clone [!]
 ARG branch=main
