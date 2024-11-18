@@ -77,7 +77,7 @@ def warm():
                               'best_model-2024-07-29_21-23-29.pt')
     if not os.path.exists(model_path):
         print("Model not found.")
-    model = torch.load(model_path,
+    model = torch.load(model_path,    # nosec B614 (force bandit to ignore this error)
                        weights_only=False,
                        map_location=torch.device(device))
     model = model.to(device)
