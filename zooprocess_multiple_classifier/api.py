@@ -96,6 +96,14 @@ def get_predict_args():
             },
             required = True
         ),
+        "bottom_crop": fields.Int(
+            metadata={
+                'description': "Number of pixels to crop from the bottom of the\
+                image (e.g. to remove the scale bar). [Default: 31px]"
+            },
+            required=False,
+            load_default=31,
+       )
     }
 
     return arg_dict
@@ -121,7 +129,7 @@ def predict(**kwargs):
 
     # prepare it for the network
     img = img.convert('RGB')
-    img = transform_valid(img)
+    img = transform_valid(img, kwargs['bottom_crop'])
     img = img.to(device)
     img = img[None, :, :, :]  # add empty dimension as for a batch
 

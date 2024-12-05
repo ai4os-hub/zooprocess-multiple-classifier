@@ -11,11 +11,11 @@ import numpy as np
 
 
 # Prepare a zooscan image by removing the scale bar and centering on the object
-def prepare_zooscan_img(img):
+def prepare_zooscan_img(img, bottom_crop):
     # crop bottom
     w, h = img.size
     img = trf.to_image(img)  # faster on tensors
-    img = trf.crop(img, 0, 0, h-31, w)
+    img = trf.crop(img, 0, 0, h-bottom_crop, w)
 
     # center on object
     img = trf.invert(img)
@@ -63,9 +63,9 @@ def transform_train(img):
 
 
 # Prepare the image and only resize it
-def transform_valid(img):
-    img = prepare_zooscan_img(img)
     # convert
+def transform_valid(img, bottom_crop):
+    img = prepare_zooscan_img(img, bottom_crop)
     convert = tr.Compose([
         tr.Resize(224),
         tr.ToDtype(torch.float32, scale=True)
