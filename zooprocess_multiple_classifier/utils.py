@@ -63,9 +63,9 @@ def transform_train(img):
 
 
 # Prepare the image and only resize it
-    # convert
 def transform_valid(img, bottom_crop):
     img = prepare_zooscan_img(img, bottom_crop)
+    # resize
     convert = tr.Compose([
         tr.Resize(224),
         tr.ToDtype(torch.float32, scale=True)
