@@ -7,7 +7,6 @@ Utility functions, used in api.py
 import torch
 import torchvision.transforms.v2 as tr
 import torchvision.transforms.v2.functional as trf
-import numpy as np
 
 
 # Prepare a zooscan image by removing the scale bar and centering on the object
@@ -22,20 +21,20 @@ def prepare_zooscan_img(img, bottom_crop):
     sum_col = torch.sum(img[0,], 0)
     sum_row = torch.sum(img[0,], 1)
 
-    obj_col = np.where(sum_col > 2)
-    min_col = np.min(obj_col)
-    max_col = np.max(obj_col)
+    obj_col = torch.where(sum_col > 2)[0]
+    min_col = torch.min(obj_col)
+    max_col = torch.max(obj_col)
 
-    obj_row = np.where(sum_row > 2)
-    min_row = np.min(obj_row)
-    max_row = np.max(obj_row)
+    obj_row = torch.where(sum_row > 2)[0]
+    min_row = torch.min(obj_row)
+    max_row = torch.max(obj_row)
 
     w = max_col - min_col
     h = max_row - min_row
     img = trf.crop(img, min_row, min_col, h, w)
 
     # pad with black
-    pad = np.abs((h-w)/2)
+    pad = torch.abs((h-w)/2)
     pad_1 = int(pad+0.5)
     pad_2 = int(pad)
     if w < h:
