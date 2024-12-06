@@ -5,15 +5,17 @@ Utility functions, used in api.py
 """
 
 import torch
+from torch.utils.data import Dataset
+
 import torchvision.transforms.v2 as tr
 import torchvision.transforms.v2.functional as trf
+from torchvision.io import read_image
 
 
 # Prepare a zooscan image by removing the scale bar and centering on the object
 def prepare_zooscan_img(img, bottom_crop):
     # crop bottom
-    w, h = img.size
-    img = trf.to_image(img)  # faster on tensors
+    d, h, w = img.size()
     img = trf.crop(img, 0, 0, h-bottom_crop, w)
 
     # center on object
@@ -72,3 +74,21 @@ def transform_valid(img, bottom_crop):
     img = convert(img)
 
     return img
+
+
+class ZooScanEvalDataset(Dataset):
+    def __init__(self, paths, names, transform=None, bottom_crop=0):
+      self.paths = paths
+      self.names = names
+      self.transform = transform
+      self.bottom_crop = bottom_crop
+
+    def __len__(self):
+      return len(self.paths)
+
+    def __getitem__(self, idx):
+      img = read_image(self.paths[idx])
+      if self.transform:
+        img = self.transform(img, bottom_crop=self.bottom_crop)
+      name = self.names[idx]
+      return img,name
