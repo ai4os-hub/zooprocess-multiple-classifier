@@ -15,11 +15,12 @@ import logging
 import os
 
 from zooprocess_multiple_classifier import config
-from zooprocess_multiple_classifier.utils import transform_valid
+from zooprocess_multiple_classifier.utils import transform_valid,ZooScanEvalDataset
 from zooprocess_multiple_classifier.misc import _catch_error
 
 from webargs import fields
 
+from zipfile import ZipFile
 from PIL import Image
 import torch
 
@@ -88,11 +89,12 @@ def get_predict_args():
     Get the list of arguments for the predict function
     """
     arg_dict = {
-        "image": fields.Field(
+        "images": fields.Field(
             metadata={
                 'type': "file",
                 'location': "form",
-                'description': "An image containing object(s) to classify (the bottom 31px will be cropped before classification)"
+                'description': "A zip file containing the images to classify (all\
+                images should be at the root of the zip file) or a single image file."
             },
             required = True
         ),
@@ -118,39 +120,70 @@ def predict(**kwargs):
         See get_predict_args() above.
     
     Returns:
-        A float, in [0,1]: the probability for the image to be a multiple. A natural
-        threshold to classify it as multiple is 0.5 but lowering this threshold can
-        increase the recall of multiples, at the expense of precision.
+        See schema below.
     """
 
-    # read image
-    filename = kwargs['image'].filename
-    img = Image.open(filename)
+    import tempfile
+    data = kwargs['images']
 
-    # prepare it for the network
-    img = img.convert('RGB')
-    img = transform_valid(img, kwargs['bottom_crop'])
-    img = img.to(device)
-    img = img[None, :, :, :]  # add empty dimension as for a batch
+    # get input files
+    # either as a zip
+    if data.content_type == 'application/zip':
+        # extract
+        tmp_input = tempfile.mkdtemp()
+        with ZipFile(data.filename, 'r') as zip_file:
+            zip_file.extractall(tmp_input)
+        # keep only images
+        filenames = sorted(os.listdir(tmp_input))
+        filenames = [file for file in filenames if file.endswith(('jpg', 'png', 'jpeg'))]
+        filepaths = [os.path.join(tmp_input, name) for name in filenames]
+    # or as a single item
+    else:
+        filepaths = [data.filename]
+        filenames = [data.original_filename]
 
-    # get predicted classification
+    # prepare data structures for the CNN
+    ds = ZooScanEvalDataset(paths=filepaths, names=filenames,
+                            transform=transform_valid, bottom_crop=kwargs['bottom_crop'])
+    dl = torch.utils.data.DataLoader(ds, batch_size=32, shuffle=False)
+    
+    # set model in evaluation mode
     model.eval()
-    with torch.no_grad():
-        score = model(img)
-    # NB: at this point, the softmax as not been applied yet
-    score = torch.nn.functional.softmax(score, dim=1)
-    # print('score =', score)
+    torch.set_grad_enabled(False)
 
-    # NB: extract the float value from the tensor, otherwise validation fails
-    return {"score": score[0][0].item()}
+    # prepare storage of probabilities to be multiple (e.g. the score)
+    scores = []
+    # iterate over batches
+    for imgs,names in dl:
+        # process batch through model, on GPU
+        imgs = imgs.to(device)
+        logits = model(imgs)
+        # convert to "probabilities" with a softmax
+        probs = torch.nn.functional.softmax(logits, dim=1)
+        # store the proba to be a multiple
+        # NB: store as a list of tensors of type float64
+        #     because the original float32 is not JSON serializable
+        scores += probs[:,0].cpu().detach().to(torch.float64)
+    
+    # extract each element of the list to have a list of floats, not tensors
+    scores = [s.item() for s in scores]
 
+    return {"names": filenames, "scores": scores}
 
-# Schema to validate the `predict()` output
+# Schema to validate the output of `predict()`
 schema = {
-    "score": fields.Float(
+    "names": fields.List(fields.Str(),
         required=True,
         metadata={
-            'description': "in [0,1]: the probability for the image to be a multiple. A natural threshold to classify it as multiple is 0.5 but lowering this threshold can increase the recall of multiples, at the expense of precision."
+            'description': "A list containing the names of input images."
+        }
+    ),
+    "scores": fields.List(fields.Float(),
+        required=True,
+        metadata={
+            'description': "A list containing the probabilities for each image to be a multiple, in [0,1].\n\
+            A natural threshold to classify an image as `multiple` is 0.5 but lowering this\
+            threshold can increase the recall of multiples, at the expense of precision."
         }
     )
 }
