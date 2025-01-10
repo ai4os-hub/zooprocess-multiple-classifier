@@ -19,8 +19,11 @@ To launch it, first install the package then run [deepaas](https://github.com/ai
 git clone https://github.com/ai4os-hub/zooprocess-multiple-classifier
 cd zooprocess-multiple-classifier
 pip install -e .
-deepaas-run --listen-ip 0.0.0.0
+deepaas-run --listen-ip 0.0.0.0 --model-name zooprocess_multiple_classifier
 ```
+
+Then browse to <http://localhost:5000> and you should get a simple message as a response, verifying that everything works as intended.
+Finally, browse to <http://localhost:5000/api> to get access to the graphical interface and documentation of the deepaas API for this model.
 
 ## Docker images
 
@@ -30,6 +33,8 @@ Getting the image works through
 ```bash
 docker pull ai4oshub/zooprocess-multiple-classifier:latest
 ```
+
+When running the docker image, map port 5000 from inside the docker to a port on the machine running docker (e.g. 55000). Then replace `http://localhost:5000` above by the ip/name of the machine and the port you mapped 5000 to (55000 in the example above).
 
 <img src="illustration_classifier.png" style="width: 100%;" alt="illustration" />
 
