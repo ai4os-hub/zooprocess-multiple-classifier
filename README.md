@@ -21,7 +21,7 @@ cd zooprocess-multiple-classifier
 pip install -e .
 ```
 
-Fetch the model weights from the first gihtub release and move them in the appropriate location
+Fetch the model weights from the first GitHub release and move them in the appropriate location
 
 ```bash
 wget https://github.com/ai4os-hub/zooprocess-multiple-classifier/releases/download/v1.0.0/best_model-2024-07-29_21-23-29.pt
