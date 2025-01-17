@@ -9,7 +9,7 @@ These ROIs should contains only one object for later classification. This module
 
 This application uses a MobileNet v3 classifier trained towards maximizing the recall of the `multiple` class. It returns the probability that the image contains multiple objects (and a natural threshold to predict it in the multiple class is therefore 0.5; but it could be lowered to further increase the recall of multiple objects).
 
-This module was developed as part of the [iMagine](https://www.imagine-ai.eu) project and in partnership with the [FOTONOWER](http://fotonower.com/) company.
+This module was developed as part of the [iMagine](https://www.imagine-ai.eu) project, by the [Laboratoire d'Océanographie de Villefranche (LOV)](http://lov.imev-mer.fr/) in partnership with the company [FOTONOWER](http://fotonower.com/).
 
 ## Run the module's API
 
