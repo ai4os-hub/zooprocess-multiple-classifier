@@ -13,17 +13,29 @@ This module was developed as part of the [iMagine](https://www.imagine-ai.eu) pr
 
 ## Run the module's API
 
-To launch it, first install the package then run [deepaas](https://github.com/ai4os/DEEPaaS):
+First download and install the package and its dependencies. It is good practice to perform this installation in a virtual environment (see the documentation for [Python native venvs](https://docs.python.org/3/library/venv.html) or [Conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#)). Then
 
 ```bash
 git clone https://github.com/ai4os-hub/zooprocess-multiple-classifier
 cd zooprocess-multiple-classifier
 pip install -e .
-deepaas-run --listen-ip 0.0.0.0 --model-name zooprocess_multiple_classifier
+```
+
+Fetch the model weights from the first gihtub release and move them in the appropriate location
+
+```bash
+wget https://github.com/ai4os-hub/zooprocess-multiple-classifier/releases/download/v1.0.0/best_model-2024-07-29_21-23-29.pt
+mv best_model-2024-07-29_21-23-29.pt models/
+```
+
+Run [DEEPaaS](https://github.com/ai4os/DEEPaaS):
+
+```bash
+deepaas-run --listen-port 5000 --model-name zooprocess_multiple_classifier
 ```
 
 Then browse to <http://localhost:5000> and you should get a simple message as a response, verifying that everything works as intended.
-Finally, browse to <http://localhost:5000/api> to get access to the graphical interface and documentation of the deepaas API for this model.
+Finally, browse to <http://localhost:5000/api> to get access to the graphical interface and documentation of the DEEPaaS API for this model.
 
 ## Docker images
 
