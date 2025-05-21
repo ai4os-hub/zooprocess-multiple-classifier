@@ -21,6 +21,8 @@ cd zooprocess-multiple-classifier
 pip install -e .
 ```
 
+(upgrading pip may be useful pip install --upgrade pip)
+
 Fetch the model weights from the first GitHub release and move them in the appropriate location
 
 ```bash
