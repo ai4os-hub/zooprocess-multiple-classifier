@@ -200,7 +200,9 @@ def get_train_args():
 
 
 def train(**kwargs):
-    from zooprocess_multiple_classifier.lib import train_model_from_jo_drive_in_a_function
+#    import sys
+#    sys.path.append(BASE_DIR)
+    from zooprocess_multiple_classifier.lib_jo import train_model_from_jo_drive_in_a_function
     train_model_from_jo_drive_in_a_function()
     return None
 

@@ -8,6 +8,7 @@ def train_model_from_jo_drive_in_a_function():
 
     ## Prepare ----
 
+
     import os
     import numpy as np
     import ipdb
@@ -30,7 +31,8 @@ def train_model_from_jo_drive_in_a_function():
     import torcheval.metrics.functional as metf
 
     # personal functions
-    from deep_zooscan import *
+#    from deep_zooscan import *
+    from deep_zooscan import transform_train, transform_valid # prepare_zooscan_img, 
 
 
     # store results in a timestamped directory
