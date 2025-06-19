@@ -32,7 +32,7 @@ def train_model_from_jo_drive_in_a_function():
 
     # personal functions
 #    from deep_zooscan import *
-    from deep_zooscan import transform_train, transform_valid # prepare_zooscan_img, 
+    from zooprocess_multiple_classifier.lib_jo.deep_zooscan import transform_train, transform_valid # prepare_zooscan_img, 
 
 
     # store results in a timestamped directory
@@ -197,3 +197,6 @@ def train_model_from_jo_drive_in_a_function():
     # log.info("Training complete")
     # log.info(f'Load model with best valid AUC: {best_auc:4f}')
     # model.load(torch.load(best_model_path, weights_only=False))
+    return {"best_model_path" : best_model_path}
+
+

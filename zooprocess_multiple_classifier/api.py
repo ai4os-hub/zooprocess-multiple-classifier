@@ -200,9 +200,18 @@ def get_train_args():
 
 
 def train(**kwargs):
-#    import sys
-#    sys.path.append(BASE_DIR)
-    from zooprocess_multiple_classifier.lib_jo import train_model_from_jo_drive_in_a_function
-    train_model_from_jo_drive_in_a_function()
-    return None
+    message = "Message Par Défaut"
+    try:
+    #    import sys
+    #    sys.path.append(BASE_DIR)
+        from zooprocess_multiple_classifier.lib_jo.train_model_jo import train_model_from_jo_drive_in_a_function
+        ret = train_model_from_jo_drive_in_a_function()
+        if ret != None:
+            message = "Training function completed successfully (up to the end) thanks train_model_from_jo_drive_in_a_function. " + str(ret)
+    except Exception as e:
+        print(str(e))
+        logger.error("Error during training: %s", e, exc_info=True)
+        message = "EST-CE LE MESSAGE QUE J'ECRIS QUI S'AFFICHE ???!?!, " + str(e)
+        #raise RuntimeError("Training failed") from e
+    return message
 
