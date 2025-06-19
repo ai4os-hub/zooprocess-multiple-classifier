@@ -188,9 +188,19 @@ schema = {
     )
 }
 
-# def get_train_args():
-#     return {}
-#
-#
-# def train(**kwargs):
-#     return None
+def get_train_args():
+    arg_dict = {
+        "epoch_num": fields.Int(
+            required=False,
+            missing=10,
+            description="Total number of training epochs",
+        ),
+    }
+    return arg_dict
+
+
+def train(**kwargs):
+    from zooprocess_multiple_classifier.lib import train_model_from_jo_drive_in_a_function
+    train_model_from_jo_drive_in_a_function()
+    return None
+
