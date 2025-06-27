@@ -1,4 +1,4 @@
-def train_model_from_jo_drive_in_a_function():
+def train_model_from_jo_drive_in_a_function(num_epochs_input = 10):
     # 18/6/25 (+210 and après waterloo) : Seules modif de victor : une indentation et des espaces dans ce qui était la première ligne du fichier 3.train_model.py
     #  !  /  usr / bin / env python
     #
@@ -126,7 +126,9 @@ def train_model_from_jo_drive_in_a_function():
     torch.save(model, best_model_path)
     best_auc = 0.0
 
-    num_epochs = 40
+    list_data_json_for_df = []
+
+    num_epochs = num_epochs_input
     for epoch in range(num_epochs):
         # print(f'Epoch {epoch + 1}/{num_epochs}')
 
@@ -186,10 +188,22 @@ def train_model_from_jo_drive_in_a_function():
             log.info(f'{epoch+1}\t{phase}\t{epoch_loss:.4f}\t{epoch_acc:.4f}\t\
             {epoch_auc:.4f}\t{epoch_multi_recall:.4f}\t{epoch_multi_precision:.4f}')
 
+            list_data_json_for_df.append({
+                "epoch": epoch + 1,
+                "phase": phase,
+                "loss": epoch_loss,
+                "accuracy": epoch_acc,
+                "AUC": epoch_auc,
+                "multi_recall": epoch_multi_recall,
+                "multi_precision": epoch_multi_precision
+            })
+
             # save the model if it is better
             if phase == 'valid' and epoch_auc > best_auc:
                 best_auc = epoch_auc
                 torch.save(model, best_model_path)
+
+
 
     log.removeHandler(file_handler)
 
@@ -197,6 +211,10 @@ def train_model_from_jo_drive_in_a_function():
     # log.info("Training complete")
     # log.info(f'Load model with best valid AUC: {best_auc:4f}')
     # model.load(torch.load(best_model_path, weights_only=False))
-    return {"best_model_path" : best_model_path}
+    import pandas as pd
+    df_trace = pd.DataFrame(list_data_json_for_df)
+    return {"best_model_path" : best_model_path,
+    "df_trace" : df_trace,
+    "log_file" : log_file}
 
 

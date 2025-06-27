@@ -65,6 +65,7 @@ model = None
 # define device  = cuda when available
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+hard_coded_model_weigth = 'best_model-2024-07-29_21-23-29.pt'
 
 def warm():
     """
@@ -75,7 +76,7 @@ def warm():
     # NB: get the model file from a github release
     model_path = os.path.join(BASE_DIR,
                               'models',
-                              'best_model-2024-07-29_21-23-29.pt')
+                              hard_coded_model_weigth)
     if not os.path.exists(model_path):
         print("Model not found.")
     model = torch.load(model_path,    # nosec B614 (force bandit to ignore this error)
@@ -105,6 +106,13 @@ def get_predict_args():
             },
             required=False,
             load_default=31,
+       ),
+        "model_weight": fields.String(
+            metadata={
+                'description': "Choose which model to use !"
+            },
+            required=False,
+            load_default=hard_coded_model_weigth,
        )
     }
 
@@ -122,9 +130,14 @@ def predict(**kwargs):
     Returns:
         See schema below.
     """
+    global hard_coded_model_weigth
 
     import tempfile
     data = kwargs['images']
+    model_weight = kwargs.get('model_weight', hard_coded_model_weigth)
+    if model_weight != hard_coded_model_weigth:
+        hard_coded_model_weigth = model_weight
+        warm()
 
     # get input files
     # either as a zip
@@ -201,13 +214,29 @@ def get_train_args():
 
 def train(**kwargs):
     message = "Message Par Défaut"
+    num_epochs_input = 2
     try:
+        num_epochs_input = kwargs.get("epoch_num", 2)
     #    import sys
     #    sys.path.append(BASE_DIR)
         from zooprocess_multiple_classifier.lib_jo.train_model_jo import train_model_from_jo_drive_in_a_function
-        ret = train_model_from_jo_drive_in_a_function()
+        ret = train_model_from_jo_drive_in_a_function(num_epochs_input)
         if ret != None:
             message = "Training function completed successfully (up to the end) thanks train_model_from_jo_drive_in_a_function. " + str(ret)
+
+        best_model_path = ret["best_model_path"]
+        now_date = os.path.dirname(best_model_path).lstrip("train_")
+
+        # Move model_weight in models
+        model_weight = 'best_model-' + str(now_date) + '.pt'
+        model_weight_path = os.path.join(BASE_DIR, 'models', model_weight)
+        import shutil
+        shutil.copy(best_model_path, model_weight_path)
+        if not os.path.exists(model_weight_path):
+            raise RuntimeError(f"Model weight file {model_weight_path} does not exist (error copy ?) after training.")
+        else:
+            message = "Model weight file found: " + model_weight_path
+
     except Exception as e:
         print(str(e))
         logger.error("Error during training: %s", e, exc_info=True)
