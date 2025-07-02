@@ -1,4 +1,9 @@
-def train_model_from_jo_drive_in_a_function(num_epochs_input = 10):
+# VR TODO 2-7-25 A renommer train_util
+
+from tensorboardX import SummaryWriter
+from zooprocess_multiple_classifier import misc
+
+def train_model_from_jo_drive_in_a_function(num_epochs_input = 10, bottom_crop=31):
     # 18/6/25 (+210 and après waterloo) : Seules modif de victor : une indentation et des espaces dans ce qui était la première ligne du fichier 3.train_model.py
     #  !  /  usr / bin / env python
     #
@@ -11,7 +16,7 @@ def train_model_from_jo_drive_in_a_function(num_epochs_input = 10):
 
     import os
     import numpy as np
-    import ipdb
+    import ipdb # VR TODO 2-7-25 a virer
     import time
     from tqdm import tqdm
     import logging
@@ -32,13 +37,16 @@ def train_model_from_jo_drive_in_a_function(num_epochs_input = 10):
 
     # personal functions
 #    from deep_zooscan import *
-    from zooprocess_multiple_classifier.lib_jo.deep_zooscan import transform_train, transform_valid # prepare_zooscan_img, 
-
+# VR TODO 2-7-25 A déplacer dans utils
+    from zooprocess_multiple_classifier.utils import transform_train, transform_valid
 
     # store results in a timestamped directory
     train_dir = datetime.datetime.now().strftime('train_%Y-%m-%d_%H-%M-%S')
     os.makedirs(train_dir)
+    writer = SummaryWriter(logdir=train_dir, flush_secs=1)
+    misc.launch_tensorboard(logdir=train_dir)
 
+    # VR TODO 2-7-25 A remplacer par tensorboard
     # prepare loggers
     log = logging.getLogger()
     log.setLevel(logging.INFO)
@@ -60,11 +68,24 @@ def train_model_from_jo_drive_in_a_function(num_epochs_input = 10):
 
     ## Data loading ----
 
+    def transform_train_bottom_crop_fix(img):
+        # prepare the image
+        img = transform_train(img, bottom_crop=bottom_crop)
+        return img
+
+    def transform_valid_bottom_crop_fix(img):
+        # prepare the image
+        img = transform_valid(img, bottom_crop=bottom_crop)
+        return img
+
+    from zooprocess_multiple_classifier.utils import transform_train_bottom_crop_fix_31, transform_valid_bottom_crop_fix_31
+
+
     log.info('Create datasets')
     # create datasets
     data_transforms = {
-        'train': transform_train,
-        'valid': transform_valid
+        'train': transform_train_bottom_crop_fix_31,
+        'valid': transform_valid_bottom_crop_fix_31
     }
     data_dir = '~/datasets/zooscan_multiples/data/'
     image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
@@ -198,13 +219,19 @@ def train_model_from_jo_drive_in_a_function(num_epochs_input = 10):
                 "multi_precision": epoch_multi_precision
             })
 
+            writer.add_scalar("scalars/loss", epoch_loss, epoch)
+            writer.add_scalar("scalars/accuracy", epoch_acc, epoch)
+            writer.add_scalar("scalars/AUC", epoch_auc, epoch)
+            writer.add_scalar("scalars/epoch_multi_recall", epoch_multi_recall, epoch)
+            writer.add_scalar("scalars/epoch_multi_precision", epoch_multi_precision, epoch)
+
             # save the model if it is better
             if phase == 'valid' and epoch_auc > best_auc:
                 best_auc = epoch_auc
                 torch.save(model, best_model_path)
 
 
-
+    writer.close()
     log.removeHandler(file_handler)
 
     # # load best model weights

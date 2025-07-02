@@ -10,10 +10,13 @@ from torch.utils.data import Dataset
 import torchvision.transforms.v2 as tr
 import torchvision.transforms.v2.functional as trf
 from torchvision.io import read_image
-
+import numpy as np
 
 # Prepare a zooscan image by removing the scale bar and centering on the object
 def prepare_zooscan_img(img, bottom_crop):
+    # convert to tensor (faster
+    img = trf.to_image(img)
+
     # crop bottom
     d, h, w = img.size()
     img = trf.crop(img, 0, 0, h-bottom_crop, w)
@@ -31,8 +34,8 @@ def prepare_zooscan_img(img, bottom_crop):
     min_row = torch.min(obj_row)
     max_row = torch.max(obj_row)
 
-    w = max_col - min_col
-    h = max_row - min_row
+    w = max_col - min_col + 1
+    h = max_row - min_row + 1
     img = trf.crop(img, min_row, min_col, h, w)
 
     # pad with black
@@ -46,25 +49,33 @@ def prepare_zooscan_img(img, bottom_crop):
 
     return img
 
+def transform_train(img, bottom_crop = 31):
+    img = prepare_zooscan_img(img, bottom_crop)
+    # augment
+    augment = tr.Compose([
+        tr.RandomResizedCrop(224, scale=(1,1.4), ratio=(1,1)),
+        tr.RandomRotation(90, fill=0),
+        tr.RandomVerticalFlip(),
+        tr.ColorJitter(brightness=0, contrast=0.2, saturation=0, hue=0),
+        tr.ToDtype(torch.float32, scale=True)
+    ])
+    img = augment(img)
 
-# # Prepare the image and augment it
-# def transform_train(img):
-#     img = prepare_zooscan_img(img)
-#     # augment
-#     augment = tr.Compose([
-#         tr.RandomResizedCrop(224, scale=(1, 1.4), ratio=(1, 1)),
-#         tr.RandomRotation(90, fill=0),
-#         tr.RandomVerticalFlip(),
-#         tr.ColorJitter(brightness=0, contrast=0.2, saturation=0, hue=0),
-#         tr.ToDtype(torch.float32, scale=True)
-#     ])
-#     img = augment(img)
-# 
-#     return img
+    return(img)
+
+def transform_train_bottom_crop_fix_31(img):
+        # prepare the image
+        img = transform_train(img, bottom_crop=31)
+        return img
+
+def transform_valid_bottom_crop_fix_31(img):
+        # prepare the image
+        img = transform_valid(img, bottom_crop=31)
+        return img
 
 
 # Prepare the image and only resize it
-def transform_valid(img, bottom_crop):
+def transform_valid(img, bottom_crop = 31):
     img = prepare_zooscan_img(img, bottom_crop)
     # resize
     convert = tr.Compose([
@@ -92,3 +103,48 @@ class ZooScanEvalDataset(Dataset):
         img = self.transform(img, bottom_crop=self.bottom_crop)
       name = self.names[idx]
       return img,name
+
+# Prepare the image and augment it
+def transform_train(img, bottom_crop = 31):
+    img = prepare_zooscan_img(img, bottom_crop)
+    # augment
+    augment = tr.Compose([
+        tr.RandomResizedCrop(224, scale=(1,1.4), ratio=(1,1)),
+        tr.RandomRotation(90, fill=0),
+        tr.RandomVerticalFlip(),
+        tr.ColorJitter(brightness=0, contrast=0.2, saturation=0, hue=0),
+        tr.ToDtype(torch.float32, scale=True)
+    ])
+    img = augment(img)
+
+    return(img)
+
+# Prepare the image and only resize it
+def transform_valid(img, bottom_crop = 31):
+    img = prepare_zooscan_img(img, bottom_crop)
+    # convert
+    convert = tr.Compose([
+        tr.Resize(224),
+        tr.ToDtype(torch.float32, scale=True)
+    ])
+    img = convert(img)
+
+    return(img)
+
+# Prepare the image and only resize it
+def transform_eval(img, bottom_crop = 31):
+    img = prepare_zooscan_img(img, bottom_crop)
+    # some data augmentation
+    convert = tr.Compose([
+        tr.RandomResizedCrop(224, scale=(0.9,1.1), ratio=(1,1)),
+        tr.RandomRotation(90, fill=0),
+        tr.RandomVerticalFlip(),
+        tr.ColorJitter(brightness=0, contrast=0.1, saturation=0, hue=0),
+        tr.ToDtype(torch.float32, scale=True)
+    ])
+    img = convert(img)
+
+    return(img)
+
+
+

@@ -74,6 +74,8 @@ def mount_nextcloud(frompath, topath):
 
 
 def launch_cmd(logdir, port):
+    print("Launching Tensorboard...")  # nosec
+    print(f"tensorboard --logdir {logdir} --port {port} --host 0.0.0.0 ")  # nosec
     subprocess.call(["tensorboard",                  # nosec
                      "--logdir", f"{logdir}",
                      "--port", f"{port}",

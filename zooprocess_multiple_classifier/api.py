@@ -89,6 +89,19 @@ def get_predict_args():
     """
     Get the list of arguments for the predict function
     """
+    #######Mettre à jour la liste des modèles
+    list_models = list()
+
+    model_root = os.path.join(BASE_DIR,
+                              'models')
+
+    for filename in os.listdir(model_root):
+        if filename.endswith(".pt"):
+            list_models.append(filename)
+#        elif "pano" in filename:
+#            list_models.append(filename)
+
+
     arg_dict = {
         "images": fields.Field(
             metadata={
@@ -107,13 +120,13 @@ def get_predict_args():
             required=False,
             load_default=31,
        ),
-        "model_weight": fields.String(
-            metadata={
-                'description': "Choose which model to use !"
-            },
+        "model_weight": fields.Str(
             required=False,
+            missing=list_models[0],
             load_default=hard_coded_model_weigth,
-       )
+            enum=list_models,
+            description= "Choose which model to use !"
+        )
     }
 
     return arg_dict
@@ -208,6 +221,14 @@ def get_train_args():
             missing=10,
             description="Total number of training epochs",
         ),
+        "bottom_crop": fields.Int(
+            metadata={
+                'description': "Number of pixels to crop from the bottom of the\
+                image (e.g. to remove the scale bar). [Default: 31px]"
+            },
+            required=False,
+            load_default=31,
+       ),
     }
     return arg_dict
 
@@ -217,10 +238,11 @@ def train(**kwargs):
     num_epochs_input = 2
     try:
         num_epochs_input = kwargs.get("epoch_num", 2)
+        bottom_crop = kwargs.get("bottom_crop", 31)
     #    import sys
     #    sys.path.append(BASE_DIR)
         from zooprocess_multiple_classifier.lib_jo.train_model_jo import train_model_from_jo_drive_in_a_function
-        ret = train_model_from_jo_drive_in_a_function(num_epochs_input)
+        ret = train_model_from_jo_drive_in_a_function(num_epochs_input, bottom_crop)
         if ret != None:
             message = "Training function completed successfully (up to the end) thanks train_model_from_jo_drive_in_a_function. " + str(ret)
 
