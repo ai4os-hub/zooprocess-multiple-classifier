@@ -14,6 +14,9 @@ from torchvision.io import read_image
 
 # Prepare a zooscan image by removing the scale bar and centering on the object
 def prepare_zooscan_img(img, bottom_crop):
+    # convert to tensor if it isn't one already
+    img = trf.to_image(img)
+
     # crop bottom
     d, h, w = img.size()
     img = trf.crop(img, 0, 0, h-bottom_crop, w)
@@ -47,20 +50,20 @@ def prepare_zooscan_img(img, bottom_crop):
     return img
 
 
-# # Prepare the image and augment it
-# def transform_train(img):
-#     img = prepare_zooscan_img(img)
-#     # augment
-#     augment = tr.Compose([
-#         tr.RandomResizedCrop(224, scale=(1, 1.4), ratio=(1, 1)),
-#         tr.RandomRotation(90, fill=0),
-#         tr.RandomVerticalFlip(),
-#         tr.ColorJitter(brightness=0, contrast=0.2, saturation=0, hue=0),
-#         tr.ToDtype(torch.float32, scale=True)
-#     ])
-#     img = augment(img)
-# 
-#     return img
+# Prepare the image and augment it
+def transform_train(img, bottom_crop):
+    img = prepare_zooscan_img(img, bottom_crop)
+    # augment
+    augment = tr.Compose([
+        tr.RandomResizedCrop(224, scale=(1, 1.4), ratio=(1, 1)),
+        tr.RandomRotation(90, fill=0),
+        tr.RandomVerticalFlip(),
+        tr.ColorJitter(brightness=0, contrast=0.2, saturation=0, hue=0),
+        tr.ToDtype(torch.float32, scale=True)
+    ])
+    img = augment(img)
+
+    return img
 
 
 # Prepare the image and only resize it
@@ -75,7 +78,9 @@ def transform_valid(img, bottom_crop):
 
     return img
 
+# NB: for the training and validation datasets, we'll use pytorch.datasets.ImageFolder()
 
+# Custom dataset class for the evaluation
 class ZooScanEvalDataset(Dataset):
     def __init__(self, paths, names, transform=None, bottom_crop=0):
       self.paths = paths
