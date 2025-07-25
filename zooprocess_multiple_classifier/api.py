@@ -242,8 +242,8 @@ def train(**kwargs):
         Path to the model weights.
     """
     run_train(
-      out_dir=os.path.join(BASE_DIR, 'data'),
       data_dir=os.path.join(BASE_DIR, 'data'),
+      out_dir=os.path.join(BASE_DIR, 'models'),
       device=device,
       bottom_crop=kwargs['bottom_crop'],
       n_epochs=kwargs['n_epochs'],
