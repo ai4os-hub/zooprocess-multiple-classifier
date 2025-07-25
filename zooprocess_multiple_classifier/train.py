@@ -16,7 +16,7 @@ import datetime
 # from tensorboardX import SummaryWriter
 # import logging
 
-def run_train(in_dir, out_dir, device, n_epochs=10, bottom_crop=31, batch_size=128, n_cores=10):
+def run_train(data_dir, out_dir, device, n_epochs=10, bottom_crop=31, batch_size=128, n_cores=10):
     # store training results in a timestamped directory
     train_dir = os.path.join(out_dir, datetime.datetime.now().strftime('train_%Y-%m-%d_%H-%M-%S'))
     os.makedirs(train_dir)
@@ -55,7 +55,7 @@ def run_train(in_dir, out_dir, device, n_epochs=10, bottom_crop=31, batch_size=1
         'train': transform_train_with_crop,
         'valid': transform_valid_with_crop
     }
-    image_datasets = {x: datasets.ImageFolder(os.path.join(in_dir, x),
+    image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                               data_transforms[x])
                          for x in ['train', 'valid']}
     dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'valid']}
