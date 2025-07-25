@@ -60,6 +60,39 @@ When running the docker image, map port 5000 from inside the docker to a port on
 
 <img src="illustration_classifier.png" style="width: 100%;" alt="illustration" />
 
+## Using the module
+
+For inference (the most common scenario), pass an image or a zip containing images at its root to `/v2/models/zooprocess_multiple_classifier/predict/`.
+
+For training, place data in `data`. We expect one folder called `train` and another called `valid`, each with subfolders called `multi` and `single` that each contain images of multiple organisms or single organisms. In other words:
+
+```
+data/
+│
+├── train/
+│   ├── multi/
+│   │   ├── 1234.jpg
+│   │   ├── 1235.jpg
+│   │   └── ...
+│   └── single
+│       ├── 342.jpg
+│       ├── 1235.jpg
+│       └── ...
+│
+└── valid/
+    ├── multi/
+    │   ├── 23245.jpg
+    │   ├── 6754.jpg
+    │   └── ...
+    └── single
+        ├── 234.jpg
+        ├── 43567.jpg
+        └── ...
+```
+
+Then, call the `/v2/models/zooprocess_multiple_classifier/train/` end point of the API.
+During training, Tensorboard will be available on port 6006.
+
 ## Project structure
 
 ```
