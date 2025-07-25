@@ -92,7 +92,6 @@ def run_train(data_dir, out_dir, device, n_epochs=10, bottom_crop=31, batch_size
     best_loss = 10**6
 
     for epoch in range(n_epochs):
-        print(f"epoch: {epoch+1}/{n_epochs}")
         for phase in ['train', 'valid']:
             # set the model in the current mode
             if phase == 'train':
