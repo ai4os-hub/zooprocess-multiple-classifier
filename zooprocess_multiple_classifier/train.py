@@ -200,4 +200,4 @@ def run_train(in_dir, out_dir, device, n_epochs=10, bottom_crop=31, batch_size=1
     # model.load(torch.load(best_model_path, weights_only=False))
     # import pandas as pd
     # df_trace = pd.DataFrame(list_data_json_for_df)
-    return best_model_path
+    return None

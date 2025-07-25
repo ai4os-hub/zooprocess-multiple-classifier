@@ -241,7 +241,7 @@ def train(**kwargs):
     Returns:
         Path to the model weights.
     """
-    weights_path = run_train(
+    run_train(
       in_dir=os.path.join(BASE_DIR, 'data'),
       out_dir=os.path.join(BASE_DIR, 'data'),
       device=device,
@@ -250,4 +250,4 @@ def train(**kwargs):
       batch_size=kwargs['batch_size'],
       n_cores=kwargs['n_cores']
     )
-    return weights_path
+    return None
