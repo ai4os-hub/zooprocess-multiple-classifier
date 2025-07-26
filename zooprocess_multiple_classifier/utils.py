@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Utility functions, used in api.py
-(which allow to keep api.py simple)
+(which allow to keep api.py simpler)
 """
 
 import torch
