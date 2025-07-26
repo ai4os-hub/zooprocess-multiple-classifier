@@ -35,7 +35,8 @@ Fetch the model weights from the first GitHub release and move them in the appro
 
 ```bash
 wget https://github.com/ai4os-hub/zooprocess-multiple-classifier/releases/download/v1.0.0/best_model-2024-07-29_21-23-29.pt
-mv best_model-2024-07-29_21-23-29.pt models/
+mkdir models/2024-07-29_21-23-29/
+mv best_model-2024-07-29_21-23-29.pt models/2024-07-29_21-23-29/best_model.pt
 ```
 
 Run [DEEPaaS](https://github.com/ai4os/DEEPaaS):
