@@ -13,6 +13,7 @@ an exemplar module [2].
 from pathlib import Path
 import logging
 import os
+from glob import glob
 
 from zooprocess_multiple_classifier import config
 from zooprocess_multiple_classifier.utils import transform_valid,ZooScanEvalDataset
@@ -73,12 +74,18 @@ def warm():
     """
     global model, device
 
-    # NB: get the model file from a github release
-    model_path = os.path.join(BASE_DIR,
-                              'models',
-                              'best_model-2024-07-29_21-23-29.pt')
+    # list all models and pick the latest
+    # NB: we only warm-load this one for efficiency purposes
+    model_root = os.path.join(BASE_DIR, 'models', '*', '*')
+    model_paths = [p for p in glob(model_root) if p.endswith('.pt')]
+    model_paths.sort()
+    model_path = model_paths[-1]
+    # NB: get at least one model file from a github release, as per the README
+    
     if not os.path.exists(model_path):
         print("Model not found.")
+    print("Load model ", model_path)
+    # TODO convert print() statement into proper logging items with the logger object above
     model = torch.load(model_path,    # nosec B614 (force bandit to ignore this error)
                        weights_only=False,
                        map_location=torch.device(device))
