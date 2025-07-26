@@ -238,6 +238,7 @@ def get_train_args():
     return arg_dict
 
 
+@_catch_error
 def train(**kwargs):
     """
     Train the classifier
