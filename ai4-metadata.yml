@@ -12,7 +12,7 @@ description: |-
 
 dates:
   created: '2024-07-28'
-  updated: '2024-10-16'
+  updated: '2025-07-26'
 links:
   source_code: https://github.com/ai4os-hub/zooprocess-multiple-classifier
   docker_image: ai4oshub/zooprocess-multiple-classifier
