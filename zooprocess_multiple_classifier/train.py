@@ -91,6 +91,10 @@ def run_train(data_dir, out_dir, device, n_epochs=10, bottom_crop=31, batch_size
     torch.save(model, best_model_path)
     best_loss = 10**6
 
+    # add header for logged quantities
+    print('epoch\tphase\tloss\tacc\tm_rec\tm_prec')
+    #                          accuracy recall_of_multiples precision_of_multiples
+
     for epoch in range(n_epochs):
         for phase in ['train', 'valid']:
             # set the model in the current mode
@@ -140,8 +144,7 @@ def run_train(data_dir, out_dir, device, n_epochs=10, bottom_crop=31, batch_size
             epoch_acc = torch.sum(torch.diag(run_cm))/tot_n
             epoch_multi_recall = run_cm[0,0] / torch.sum(run_cm[0,:])
             epoch_multi_precision = run_cm[0,0] / torch.sum(run_cm[:,0])
-            print(f'{epoch+1}/{n_epochs}\t{phase}\t{epoch_loss:.4f}\t{epoch_acc:.4f}\t\
-            {epoch_multi_recall:.4f}\t{epoch_multi_precision:.4f}')
+            print(f'{epoch+1}/{n_epochs}\t{phase}\t{epoch_loss:.4f}\t{epoch_acc:.4f}\t{epoch_multi_recall:.4f}\t{epoch_multi_precision:.4f}')
 
             # log to tensorboard
             writer.add_scalar("scalars/loss", epoch_loss, epoch)
