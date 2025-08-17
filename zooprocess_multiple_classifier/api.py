@@ -97,7 +97,7 @@ def get_predict_args():
     Get the list of arguments for the predict function
     """
     arg_dict = {
-        "images": fields.Field(
+        "images": fields.Raw(
             metadata={
                 'type': "file",
                 'location': "form",
@@ -214,7 +214,7 @@ def get_train_args():
                 'description': "Number of training epochs. [Default: 10]"
             },
             required=False,
-            missing=10
+            load_default=10
         ),
         "batch_size": fields.Int(
             metadata={
@@ -230,7 +230,7 @@ def get_train_args():
                 Should be large enough to saturate GPU. [Default: 10]"
             },
             required=False,
-            missing=10
+            load_default=10
         ),
 
     }
