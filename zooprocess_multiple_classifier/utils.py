@@ -34,8 +34,8 @@ def prepare_zooscan_img(img, bottom_crop):
     min_row = torch.min(obj_row)
     max_row = torch.max(obj_row)
 
-    w = max_col - min_col
-    h = max_row - min_row
+    w = max_col - min_col + 1
+    h = max_row - min_row + 1
     img = trf.crop(img, min_row, min_col, h, w)
 
     # pad with black
