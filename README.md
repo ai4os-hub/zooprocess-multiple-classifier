@@ -40,7 +40,7 @@ mv best_model-2024-07-29_21-23-29.pt models/2024-07-29_21-23-29/best_model.pt
 Run [DEEPaaS](https://github.com/ai4os/DEEPaaS):
 
 ```bash
-deepaas-run --listen-port 5000 --model-name zooprocess_multiple_classifier
+deepaas-run --listen-ip 0.0.0.0 --listen-port 5000 --model-name zooprocess_multiple_classifier
 ```
 
 Then browse to <http://localhost:5000> and you should get a simple message as a response, verifying that everything works as intended.
