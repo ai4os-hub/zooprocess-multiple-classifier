@@ -9,3 +9,14 @@ testtools>=1.4.0
 
 pytest
 pytest-cov
+
+webargs~=5.5.3
+deepaas>=2.1.0
+torch==2.7.0
+pillow==11.3.0
+torchvision==0.22.0
+numpy~=2.3.2
+tensorboard>=2.20.0
+tensorboardX>=2.6.2
+torcheval>=0.0.7
+
