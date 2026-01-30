@@ -9,7 +9,6 @@ description: |-
   This application uses a MobileNet v3 classifier trained towards maximizing the recall of the `multiple` class. It returns the probability that the image contains multiple objects (and a natural threshold to predict it in the multiple class is therefore 0.5; but it could be lowered to further increase the recall of multiple objects).
 
   <img class='fit', src='https://raw.githubusercontent.com/ai4os-hub/zooprocess-multiple-classifier/main/illustration_classifier.png'/>
-
 dates:
   created: '2024-07-28'
   updated: '2025-07-26'
@@ -17,15 +16,17 @@ links:
   source_code: https://github.com/ai4os-hub/zooprocess-multiple-classifier
   docker_image: ai4oshub/zooprocess-multiple-classifier
   ai4_template: ai4-template/2.1.1
+  zenodo_doi: https://doi.org/10.5281/zenodo.18241878
 tags:
-  - deep learning
-  - vo.imagine-ai.eu
+- deep learning
+- vo.imagine-ai.eu
 tasks:
-  - Computer Vision
+- Computer Vision
 categories:
-  - AI4 pre trained
-  - AI4 inference
+- AI4 pre trained
+- AI4 inference
 libraries:
-  - PyTorch
+- PyTorch
 data-type:
-  - Image
+- Image
+doi: 10.5281/zenodo.18241878
